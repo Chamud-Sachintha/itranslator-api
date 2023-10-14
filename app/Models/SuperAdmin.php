@@ -13,6 +13,7 @@ class SuperAdmin extends Model
         'full_name',
         'email',
         'mobile_number',
+        'password',
         'token',
         'login_time',
         'create_time',
@@ -23,6 +24,7 @@ class SuperAdmin extends Model
         $map['full_name'] = $info['fullName'];
         $map['email'] = $info['email'];
         $map['mobile_number'] = $info['mobileNumber'];
+        $map['password'] = $info['password'];
         $map['create_time'] = $info['createTime'];
         $map['flag'] = "SA";
 

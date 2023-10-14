@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Authcontroller;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('authenticate-user', [Authcontroller::class, 'authenticateUser']);
+Route::post('add-client', [Authcontroller::class, 'createNewClient']);
+
+Route::middleware('authToken')->post('get-menu-perm', [Authcontroller::class, 'checkMenuPermission']);
+Route::middleware('authToken')->post('add-service', [ServiceController::class, 'addNewService']);

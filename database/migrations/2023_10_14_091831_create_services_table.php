@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSuperAdminsTable extends Migration
+class CreateServicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,14 @@ class CreateSuperAdminsTable extends Migration
      */
     public function up()
     {
-        Schema::create('super_admins', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
-            $table->string('email');
-            $table->string('mobile_number');
-            $table->string('password');
-            $table->string('token')->nullable();
-            $table->integer('login_time')->nullable();
+            $table->string('service_name');
+            $table->string('price_1');
+            $table->string('price_2');
+            $table->string('price_3');
+            $table->string('description');
             $table->integer('create_time');
-            $table->string('flag');
             $table->timestamps();
         });
     }
@@ -34,6 +32,6 @@ class CreateSuperAdminsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('super_admins');
+        Schema::dropIfExists('services');
     }
 }

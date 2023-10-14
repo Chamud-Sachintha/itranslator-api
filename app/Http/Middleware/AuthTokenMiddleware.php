@@ -45,7 +45,7 @@ class AuthTokenMiddleware
             } else if ($request->flag == "A") {
 
             } else if ($request->flag == "C") {
-
+                $user = $this->Client->find_by_token($request->token);
             } else {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
