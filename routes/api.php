@@ -25,3 +25,4 @@ Route::post('add-client', [Authcontroller::class, 'createNewClient']);
 
 Route::middleware('authToken')->post('get-menu-perm', [Authcontroller::class, 'checkMenuPermission']);
 Route::middleware('authToken')->post('add-service', [ServiceController::class, 'addNewService']);
+Route::middleware('authToken')->post('get-service-list', [ServiceController::class, 'getTranslateServiceList']);

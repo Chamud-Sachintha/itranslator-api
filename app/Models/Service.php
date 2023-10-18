@@ -28,4 +28,8 @@ class Service extends Model
 
         return $this->create($map);
     }
+
+    public function query_all() {
+        return $this->all();
+    }
 }

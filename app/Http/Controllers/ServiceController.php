@@ -33,17 +33,17 @@ class ServiceController extends Controller
         if ($request_token == "") {
             return $this->AppHelper->responseMessageHandle(0, "Token is required.");
         } else if ($flag == "") {
-            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
         } else if ($serviceName == "") {
-            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+            return $this->AppHelper->responseMessageHandle(0, "Service Name is required.");
         } else if ($firstPrice == "") {
-            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+            return $this->AppHelper->responseMessageHandle(0, "First Price is required.");
         } else if ($secondPrice == "") {
-            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+            return $this->AppHelper->responseMessageHandle(0, "Second Price is required.");
         } else if ($thirdPrice == "") {
-            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+            return $this->AppHelper->responseMessageHandle(0, "Third Price is required.");
         } else if ($description == "") {
-            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+            return $this->AppHelper->responseMessageHandle(0, "Descripotion is required.");
         } else {
             
             try {
@@ -75,12 +75,42 @@ class ServiceController extends Controller
         }
     }
 
+    public function getTranslateServiceList(Request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($flag == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
+        } else {
+
+            try {
+                $allServiceList = $this->Service->query_all();
+
+                $serviceList = array();
+                foreach ($allServiceList as $key => $value) {
+                    $serviceList[$key]['serviceName'] = $value['service_name'];
+                    $serviceList[$key]['firstPrice'] = $value['first_price'];
+                    $serviceList[$key]['secondPrice'] = $value['second_price'];
+                    $serviceList[$key]['thirdPrice'] = $value['third_price'];
+                    $serviceList[$key]['description'] = $value['description'];
+                }
+
+                return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $serviceList);
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
+
     private function checkPermission($token, $flag) {
         
         $perm = null;
 
         try {
-            if ($flag == "G") {
+            if ($flag == "SA") {
                 $perm = $this->SuperAdmin->check_permission($token, $flag);
             } else {
                 return false;
