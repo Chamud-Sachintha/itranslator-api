@@ -92,9 +92,9 @@ class ServiceController extends Controller
                 $serviceList = array();
                 foreach ($allServiceList as $key => $value) {
                     $serviceList[$key]['serviceName'] = $value['service_name'];
-                    $serviceList[$key]['firstPrice'] = $value['first_price'];
-                    $serviceList[$key]['secondPrice'] = $value['second_price'];
-                    $serviceList[$key]['thirdPrice'] = $value['third_price'];
+                    $serviceList[$key]['firstPrice'] = $value['price_1'];
+                    $serviceList[$key]['secondPrice'] = $value['price_2'];
+                    $serviceList[$key]['thirdPrice'] = $value['price_3'];
                     $serviceList[$key]['description'] = $value['description'];
                 }
 
