@@ -91,6 +91,7 @@ class ServiceController extends Controller
 
                 $serviceList = array();
                 foreach ($allServiceList as $key => $value) {
+                    $serviceList[$key]['serviceId'] = $value['id'];
                     $serviceList[$key]['serviceName'] = $value['service_name'];
                     $serviceList[$key]['firstPrice'] = $value['price_1'];
                     $serviceList[$key]['secondPrice'] = $value['price_2'];
