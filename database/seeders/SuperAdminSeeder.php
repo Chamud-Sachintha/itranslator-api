@@ -17,7 +17,7 @@ class SuperAdminSeeder extends Seeder
     public function run()
     {
         $adminInfo = array();
-        $adminInfo['full_name'] = 'Chamud Sachintha';
+        $adminInfo['full_name'] = 'Kamal Sachintha';
         $adminInfo['email'] = "abc123@gmail.com";
         $adminInfo['mobile_number'] = "11111111";
         $adminInfo['password'] = Hash::make(123);
