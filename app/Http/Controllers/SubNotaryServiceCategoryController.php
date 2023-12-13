@@ -38,6 +38,13 @@ class SubNotaryServiceCategoryController extends Controller
         } else {
 
             try {
+
+                $validateSubCategory = $this->SubNotaryServiceCategory->find_by_name($subCategoryName);
+
+                if (!empty($validateSubCategory)) {
+                    return $this->AppHelper->responseMessageHandle(0, "Already Added.");
+                }
+
                 if ($this->validateMainCategory($mainCategoryId)) {
                     $subCategoryInfo = array();
                     $subCategoryInfo['mainCategoryId'] = $mainCategoryId;
@@ -47,7 +54,9 @@ class SubNotaryServiceCategoryController extends Controller
                     $subCategory = $this->SubNotaryServiceCategory->add_log($subCategoryInfo);
 
                     if ($subCategory) {
-
+                        return $this->AppHelper->responseMessageHandle(1, "Operation Complete");
+                    } else {
+                        return $this->AppHelper->responseMessageHandle(0, "Error Occured.");
                     }
                 } else {
                     return $this->AppHelper->responseMessageHandle(0, "Invalid Main Category ID");

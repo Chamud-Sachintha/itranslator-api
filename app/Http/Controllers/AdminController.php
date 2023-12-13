@@ -24,7 +24,8 @@ class AdminController extends Controller
         $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
         $firstName = (is_null($request->firstName) || empty($request->firstName)) ? "" : $request->firstName;
         $lastName = (is_null($request->lastName) || empty($request->lastName)) ? "" : $request->lastName;
-        $emailAddress = (is_null($request->eemailAddress) || empty($request->emailAddress)) ? "" : $request->emailAddress;
+        $emailAddress = (is_null($request->emailAddress) || empty($request->emailAddress)) ? "" : $request->emailAddress;
+        $password = (is_null($request->password) || empty($request->password)) ? "" : $request->password;
 
         if ($request_token == "") {
             return $this->AppHelper->responseMessageHandle(0, "Token is required.");
@@ -50,7 +51,8 @@ class AdminController extends Controller
                 $adminUserInfo['firstName'] = $firstName;
                 $adminUserInfo['lastName'] = $lastName;
                 $adminUserInfo['emailAddress'] = $emailAddress;
-                $adminUserInfo['password'] = Hash::make(123);
+                $adminUserInfo['password'] = $password;
+                $adminUserInfo['createTime'] = $this->AppHelper->get_date_and_time();
 
                 $resp = $this->AdminUser->add_log($adminUserInfo);
 
@@ -72,12 +74,23 @@ class AdminController extends Controller
         $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
 
         if ($request_token == "") {
-
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
         } else if ($flag == "") {
-
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
         } else {
             try {
+                $allAdminList = $this->AdminUser->find_all();
 
+                $dataList = array();
+                foreach ($allAdminList as $key => $value) {
+                    $dataList[$key]['id'] = $value['id'];
+                    $dataList[$key]['firstName'] = $value['first_name'];
+                    $dataList[$key]['lastName'] = $value['last_name'];
+                    $dataList[$key]['emailAddress'] = $value['email'];
+                    $dataList[$key]['createTime'] = $value['create_time'];
+                }
+
+                return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }

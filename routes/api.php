@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Authcontroller;
 use App\Http\Controllers\MainNotaryServiceCategoryController;
 use App\Http\Controllers\ServiceController;
@@ -32,3 +33,6 @@ Route::middleware('authToken')->post('get-tr-service-list', [ServiceController::
 Route::middleware('authToken')->post('add-notary-main-category', [MainNotaryServiceCategoryController::class, 'addNewMainCategory']);
 Route::middleware('authToken')->post('get-all-main-notary-categories', [MainNotaryServiceCategoryController::class, 'getAllMainNotaryServiceCategoryList']);
 Route::middleware('authToken')->post('add-notary-sub-category', [SubNotaryServiceCategoryController::class, 'addNewSubNotaryServiceCategory']);
+
+Route::middleware('authToken')->post('create-admin-user', [AdminController::class, 'createAdminUser']);
+Route::middleware('authToken')->post('get-admin-user-list', [AdminController::class, 'getAdminUserList']);

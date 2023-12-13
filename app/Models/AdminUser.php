@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class AdminUser extends Model
 {
@@ -22,9 +23,9 @@ class AdminUser extends Model
 
     public function add_log($adminInfo) {
         $map['first_name'] = $adminInfo['firstName'];
-        $map['last_name'] = $adminInfo['last_name'];
+        $map['last_name'] = $adminInfo['lastName'];
         $map['email'] = $adminInfo['emailAddress'];
-        $map['password'] = $adminInfo['password'];
+        $map['password'] = Hash::make($adminInfo['password']);
         $map['flag'] = "A";
         $map['create_time'] = $adminInfo['createTime'];
 
@@ -34,6 +35,10 @@ class AdminUser extends Model
     public function validate_email($email) {
         $map['email'] = $email;
 
-        return $this->where($email)->first();
+        return $this->where($map)->first();
+    }
+
+    public function find_all() {
+        return $this->all();
     }
 }

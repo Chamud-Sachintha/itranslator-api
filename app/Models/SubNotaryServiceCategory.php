@@ -23,6 +23,12 @@ class SubNotaryServiceCategory extends Model
         return $this->create($map);
     }
 
+    public function find_by_name($categoryName) {
+        $map['sub_category_name'] = $categoryName;
+
+        return $this->where($map)->first();
+    }
+
     public function find_all() {
         return $this->all();
     }
