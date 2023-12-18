@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Helpers\AppHelper;
 use App\Models\Admin;
+use App\Models\AdminUser;
 use App\Models\Client;
 use App\Models\SuperAdmin;
 use Closure;
@@ -13,14 +14,14 @@ class AuthTokenMiddleware
 {
 
     private $SuperAdmin;
-    private $Admin;
+    private $AdminUser;
     private $Client;
     private $AppHelper;
 
     public function __construct()
     {
         $this->SuperAdmin = new SuperAdmin();
-        $this->Admin = new Admin();
+        $this->AdminUser = new AdminUser();
         $this->Client = new Client();
         $this->AppHelper = new AppHelper();
     }
@@ -43,7 +44,7 @@ class AuthTokenMiddleware
             if ($request->flag == "SA") {
                 $user = $this->SuperAdmin->find_by_token($request->token);
             } else if ($request->flag == "A") {
-
+                $user = $this->AdminUser->find_by_token($request->token);
             } else if ($request->flag == "C") {
                 $user = $this->Client->find_by_token($request->token);
             } else {

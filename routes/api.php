@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminUser\AdminOrderAssignController;
+use App\Http\Controllers\AdminUser\AdminOrderRequestController;
 use App\Http\Controllers\Authcontroller;
 use App\Http\Controllers\MainNotaryServiceCategoryController;
 use App\Http\Controllers\ServiceController;
@@ -36,3 +38,6 @@ Route::middleware('authToken')->post('add-notary-sub-category', [SubNotaryServic
 
 Route::middleware('authToken')->post('create-admin-user', [AdminController::class, 'createAdminUser']);
 Route::middleware('authToken')->post('get-admin-user-list', [AdminController::class, 'getAdminUserList']);
+Route::middleware('authToken')->post('get-tr-orders', [AdminOrderRequestController::class, 'getAllTranslationOrderList']);
+Route::middleware('authToken')->post('assign-order', [AdminOrderAssignController::class, 'assignOrder']);
+Route::middleware('authToken')->post('get-ns-orders', [AdminOrderRequestController::class, 'getNotaruyServiceOrderList']);

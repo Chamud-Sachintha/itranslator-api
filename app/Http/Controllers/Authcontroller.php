@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\AppHelper;
 use App\Models\Admin;
+use App\Models\AdminUser;
 use App\Models\Client;
 use App\Models\SuperAdmin;
 use Illuminate\Http\Request;
@@ -12,14 +13,14 @@ use Illuminate\Support\Facades\Hash;
 class Authcontroller extends Controller
 {
     private $SuperAdmin;
-    private $Admin;
+    private $AdminUser;
     private $Client;
     private $AppHelper;
 
     public function __construct()
     {
         $this->SuperAdmin = new SuperAdmin();
-        $this->Admin = new Admin();
+        $this->AdminUser = new AdminUser();
         $this->Client = new Client();
         $this->AppHelper = new AppHelper();
     }
@@ -41,7 +42,7 @@ class Authcontroller extends Controller
                 if ($flag == "SA") {
                     $user = $this->SuperAdmin->check_permission($request_token, $flag);
                 } else if ($flag == "A") {
-
+                    $user = $this->AdminUser->check_permission($request_token, $flag);
                 } else if ($flag == "C") {
                     $user = $this->Client->check_permission($request_token, $flag);
                 } else {
@@ -140,7 +141,7 @@ class Authcontroller extends Controller
                 if ($flag == "SA") {
                     $authenticateUser = $this->authenticateSuperAdmin($authInfo);
                 } else if ($flag == "A") {
-                    
+                    $authenticateUser = $this->authenticateAdmin($authInfo);
                 } else if ($flag == "C") {
                     $authenticateUser = $this->authenticateClient($authInfo);
                 } else {
@@ -183,7 +184,31 @@ class Authcontroller extends Controller
     }
 
     private function authenticateAdmin($authInfo) {
-        
+        $loginInfo = array();
+        $verify_username = $this->AdminUser->validate_email($authInfo['userName']);
+
+        if (!empty($verify_username)) {
+            if (Hash::check($authInfo['password'], $verify_username['password'])) {
+                $loginInfo['id'] = $verify_username['id'];
+                $loginInfo['fullName'] = $verify_username['full_name'];
+                $loginInfo['email'] = $verify_username['email'];
+
+                $token = $this->AppHelper->generateAuthToken($verify_username);
+
+                $loginInfo['userRole'] = $verify_username['flag'];
+
+                $tokenInfo = array();
+                $tokenInfo['token'] = $token;
+                $tokenInfo['loginTime'] = $this->AppHelper->day_time();
+                $token_time = $this->AdminUser->update_login_token($verify_username['id'], $tokenInfo);
+
+                return $this->AppHelper->responseEntityHandle(1, "Operation Successfully.", $loginInfo, $token);
+            } else {
+                return $this->AppHelper->responseMessageHandle(0, "Invalid Username or Password");
+            }
+        } else {
+            return $this->AppHelper->responseMessageHandle(0, "Invalid Username or Password");
+        }
     }
 
     private function authenticateClient($authInfo) {
