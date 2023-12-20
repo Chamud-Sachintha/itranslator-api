@@ -32,4 +32,9 @@ class Service extends Model
     public function query_all() {
         return $this->all();
     }
+
+    public function find_by_id($sid) {
+        $map['id'] = $sid;
+        return $this->where($map)->first();
+    }
 }

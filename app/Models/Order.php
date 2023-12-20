@@ -33,7 +33,24 @@ class Order extends Model
 
     public function find_all_pending() {
         $map['order_status'] = 0;
-
         return $this->where($map)->get();
+    }
+
+    public function get_taken_or_processing_list() {
+        $orderStatusValues = [1, 2];
+        return $this->whereIn('order_status', $orderStatusValues)->get();
+    }
+
+    public function update_order_status($invoiceNo) {
+        $map['invoice_no'] = $invoiceNo;
+        $map1['order_status'] = 1;
+
+        return $this->where($map)->update($map1);
+    }
+
+    public function find_by_invoice($invoiceNo) {
+        $map['invoice_no'] = $invoiceNo;
+
+        return $this->where($map)->first();
     }
 }

@@ -6,6 +6,7 @@ use App\Helpers\AppHelper;
 use App\Http\Controllers\Controller;
 use App\Models\AdminOrderAssign;
 use App\Models\AdminUser;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class AdminOrderAssignController extends Controller
@@ -13,12 +14,14 @@ class AdminOrderAssignController extends Controller
     private $AppHelper;
     private $OrderAssign;
     private $AdminUser;
+    private $TranslateOrder;
 
     public function __construct()
     {
         $this->AppHelper = new AppHelper();
         $this->OrderAssign = new AdminOrderAssign();
         $this->AdminUser = new AdminUser();
+        $this->TranslateOrder = new Order();
     }
 
     public function assignOrder(Request $request) {
@@ -49,8 +52,9 @@ class AdminOrderAssignController extends Controller
                 $orderInfo['createTime'] = $this->AppHelper->get_date_and_time();
 
                 $resp = $this->OrderAssign->add_log($orderInfo);
+                $resp1 = $this->TranslateOrder->update_order_status($invoiceNo);
 
-                if ($resp) {
+                if ($resp && $resp1) {
                     return $this->AppHelper->responseMessageHandle(1, "Operation Complete");
                 } else {
                     return $this->AppHelper->responseMessageHandle(0, "Error Occured.");

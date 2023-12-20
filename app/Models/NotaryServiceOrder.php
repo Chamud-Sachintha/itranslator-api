@@ -35,7 +35,7 @@ class NotaryServiceOrder extends Model
         'modified_time'
     ];
 
-    public function find_all() {
+    public function find_all_pending() {
         $map['order_status'] = 0;
 
         return $this->where($map)->get();
