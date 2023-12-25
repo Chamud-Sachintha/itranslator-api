@@ -103,6 +103,7 @@ class AdminOrderRequestController extends Controller
         $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
         $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
         $invoiceNo = (is_null($request->invoiceNo) || empty($request->invoiceNo)) ? "" : $request->invoiceNo;
+        $type = (is_null($request->type) || empty($request->type)) ? "" : $request->type;
 
         if ($request_token == "") { 
             return $this->AppHelper->responseMessageHandle(0, "Toekn is required.");
@@ -113,30 +114,79 @@ class AdminOrderRequestController extends Controller
         } else {
 
             try {
-                $orderInfo = $this->TranslationOrder->find_by_invoice($invoiceNo);
+                
+                $dataList = null;
 
-                if ($orderInfo) {
-                    $resp = $this->TrOrderItems->get_by_orderId_and_serviceId($orderInfo->id);
-
-                    $dataList = array();
-                    foreach ($resp as $key => $value) {
-
-                        $serviceInfo = $this->Service->find_by_id($value['service_id']);
-                        $orderAssignInfo = $this->OrderAssign->get_by_invoice_id($orderInfo->invoice_no);
-                        $jsonDecodedValue = json_decode($value->json_value);
-
-                        $dataList[$key]['serviceId'] = $value['service_id'];
-                        $dataList[$key]['documentTitle'] = $serviceInfo['service_name'];
-                        $dataList[$key]['pages'] = $jsonDecodedValue->pages;
-                        $dataList[$key]['createTime'] = $value['create_time'];
-                        $dataList[$key]['assignedTime'] = $orderAssignInfo['create_time'];
-                    }
-
-                    return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
+                if ($type == "TR") {
+                    $dataList = $this->getTranslateItemList($invoiceNo);
+                } else if ($type == "NS") {
+                    
+                } else {
+                        
                 }
+
+                return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }
+        }
+    }
+
+    private function getNotaryItemList($invoiceNo) {
+        $orderInfo = $this->TranslationOrder->find_by_invoice($invoiceNo);
+
+        if ($orderInfo) {
+            $resp = $this->TrOrderItems->get_by_orderId_and_serviceId($orderInfo->id);
+
+            $dataList = array();
+            foreach ($resp as $key => $value) {
+
+                $serviceInfo = $this->Service->find_by_id($value['service_id']);
+                $orderAssignInfo = $this->OrderAssign->get_by_invoice_id($orderInfo->invoice_no);
+                $jsonDecodedValue = json_decode($value->json_value);
+
+                $dataList[$key]['serviceId'] = $value['service_id'];
+                $dataList[$key]['documentTitle'] = $serviceInfo['service_name'];
+                $dataList[$key]['pages'] = $jsonDecodedValue->pages;
+                $dataList[$key]['createTime'] = $value['create_time'];
+                $dataList[$key]['assignedTime'] = $orderAssignInfo['create_time'];
+            }
+
+            return $dataList;
+        }
+    }
+
+    private function getNotaryServiceOrderInfi($invoiceNo) {
+        $orderInfo = $this->NotaryServiceOrder->get_by_invoice_id($invoiceNo);
+
+        if ($orderInfo) {
+            $dataList = array();
+
+            // $dataList['']
+        }
+    }
+
+    private function getTranslateItemList($invoiceNo) {
+        $orderInfo = $this->TranslationOrder->find_by_invoice($invoiceNo);
+
+        if ($orderInfo) {
+            $resp = $this->TrOrderItems->get_by_orderId_and_serviceId($orderInfo->id);
+
+            $dataList = array();
+            foreach ($resp as $key => $value) {
+
+                $serviceInfo = $this->Service->find_by_id($value['service_id']);
+                $orderAssignInfo = $this->OrderAssign->get_by_invoice_id($orderInfo->invoice_no);
+                $jsonDecodedValue = json_decode($value->json_value);
+
+                $dataList[$key]['serviceId'] = $value['service_id'];
+                $dataList[$key]['documentTitle'] = $serviceInfo['service_name'];
+                $dataList[$key]['pages'] = $jsonDecodedValue->pages;
+                $dataList[$key]['createTime'] = $value['create_time'];
+                $dataList[$key]['assignedTime'] = $orderAssignInfo['create_time'];
+            }
+
+            return $dataList;
         }
     }
 }

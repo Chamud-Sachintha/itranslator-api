@@ -48,6 +48,12 @@ class Order extends Model
         return $this->where($map)->update($map1);
     }
 
+    public function get_by_id($oid) {
+        $map['id'] = $oid;
+
+        return $this->where($map)->first();
+    }
+
     public function find_by_invoice($invoiceNo) {
         $map['invoice_no'] = $invoiceNo;
 
