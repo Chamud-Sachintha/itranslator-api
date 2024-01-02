@@ -58,6 +58,12 @@ class AdminUser extends Model
         return $this->where(array('id' => $uid))->update($map);
     }
 
+    public function find_by_id($uid) {
+        $map['id'] = $uid;
+
+        return $this->where($map)->first();
+    }
+
     public function find_all() {
         return $this->all();
     }

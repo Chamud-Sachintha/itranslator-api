@@ -50,4 +50,6 @@ Route::middleware('authToken')->post('get-order-info-by-invoice', [AdminOrderReq
 
 Route::middleware('authToken')->post('upload-translated-docs', [TranslatedDocumentsController::class, 'submitTranslatedDocumentsForOrder']);
 Route::middleware('authToken')->post('get-doc-list-by-order', [TranslatedDocumentsController::class, 'getUploadedDocumentsByOrder']);
+Route::middleware('authToken')->post('get-tr-order-docs-by-oid', [AdminOrderRequestController::class, 'getTranslateOrderDocuments']);
 Route::middleware('authToken')->post('send-admin-message', [AdminMessageController::class, 'sendAdminMessageToClient']);
+Route::middleware('authToken')->post('get-order-message-list', [AdminMessageController::class, 'getMessageList']);

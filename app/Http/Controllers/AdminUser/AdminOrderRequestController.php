@@ -132,6 +132,38 @@ class AdminOrderRequestController extends Controller
         }
     }
 
+    public function getTranslateOrderDocuments(Request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
+        $invoiceNo = (is_null($request->invoiceNo) || empty($request->invoiceNo)) ? "" : $request->invoiceNo;
+        $serviceId = (is_null($request->serviceId) || empty($request->serviceId)) ? "" : $request->serviceId;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($flag == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
+        } else if ($invoiceNo == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Invoice is required.");
+        } else if ($serviceId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Service Id is Required.");
+        } else {
+
+            try {
+                $order = $this->TranslationOrder->find_by_invoice($invoiceNo);
+
+                if ($order) {
+                    $orderItems = $this->TrOrderItems->find_by_order_and_serviceId($order->id, $serviceId);
+                    $jsonArrayValues = json_decode($orderItems->json_value);
+                    
+                    return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $jsonArrayValues);
+                }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
+
     private function getNotaryItemList($invoiceNo) {
         $orderInfo = $this->TranslationOrder->find_by_invoice($invoiceNo);
 
