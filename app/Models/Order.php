@@ -10,8 +10,9 @@ class Order extends Model
     use HasFactory;
 
     /*
-        'payment_status'                     0- pending 1- paid
+        'payment_status'                     0- pending 1- paid 2 - gateway pending
         'order_status',                      0- pending 1- taken 2- processing 3- complete
+        'is_customer_complete'               0- pending 1- complete
         'bank_slip',                         if not it will blank
         'delivery_time_type',                
         'delivery_method',
@@ -23,6 +24,7 @@ class Order extends Model
         'client_id',
         'payment_status', 
         'order_status',
+        'is_customer_complete',
         'bank_slip',
         'delivery_time_type',
         'delivery_method',

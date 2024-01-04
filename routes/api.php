@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminUser\AdminTaskController;
 use App\Http\Controllers\AdminUser\TranslatedDocumentsController;
 use App\Http\Controllers\Authcontroller;
 use App\Http\Controllers\MainNotaryServiceCategoryController;
+use App\Http\Controllers\OrderRequests;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SubNotaryServiceCategoryController;
 use Illuminate\Http\Request;
@@ -53,3 +54,5 @@ Route::middleware('authToken')->post('get-doc-list-by-order', [TranslatedDocumen
 Route::middleware('authToken')->post('get-tr-order-docs-by-oid', [AdminOrderRequestController::class, 'getTranslateOrderDocuments']);
 Route::middleware('authToken')->post('send-admin-message', [AdminMessageController::class, 'sendAdminMessageToClient']);
 Route::middleware('authToken')->post('get-order-message-list', [AdminMessageController::class, 'getMessageList']);
+
+Route::middleware('authToken')->post('get-pending-order-requests', [OrderRequests::class, 'getOrderRequestList']);
