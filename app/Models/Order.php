@@ -35,8 +35,8 @@ class Order extends Model
 
     public function find_all_pending() {
         $map['order_status'] = 0;
-        $map['payment_status'] != 2;
-        
+        $map['payment_status'] = 0;
+
         return $this->where($map)->get();
     }
 
