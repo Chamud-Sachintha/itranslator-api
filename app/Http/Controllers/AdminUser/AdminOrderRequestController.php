@@ -213,7 +213,39 @@ class AdminOrderRequestController extends Controller
 
                 $dataList[$key]['serviceId'] = $value['service_id'];
                 $dataList[$key]['documentTitle'] = $serviceInfo['service_name'];
-                $dataList[$key]['pages'] = $jsonDecodedValue->pages;
+
+                if (property_exists($jsonDecodedValue, 'pages')) {
+                    $dataList[$key]['pages'] = $jsonDecodedValue->pages;
+                } else {
+                    $pageCount = 0;
+
+                    if (property_exists($jsonDecodedValue, 'page1')) {
+                        $pageCount += 1;
+                    }
+
+                    if (property_exists($jsonDecodedValue, 'page2')) {
+                        $pageCount += 1;
+                    }
+
+                    if (property_exists($jsonDecodedValue, 'page3')) {
+                        $pageCount += 1;
+                    }
+
+                    if (property_exists($jsonDecodedValue, 'page4')) {
+                        $pageCount += 1;
+                    }
+
+                    if (property_exists($jsonDecodedValue, 'page5')) {
+                        $pageCount += 1;
+                    }
+
+                    if (property_exists($jsonDecodedValue, 'page6')) {
+                        $pageCount += 1;
+                    }
+
+                    $dataList[$key]['pages'] = $pageCount;
+                }
+
                 $dataList[$key]['createTime'] = $value['create_time'];
                 $dataList[$key]['assignedTime'] = $orderAssignInfo['create_time'];
             }
