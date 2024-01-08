@@ -29,6 +29,12 @@ class Service extends Model
         return $this->create($map);
     }
 
+    public function update_by_id($sid, $serviceInfo) {
+        $map['id'] = $sid;
+
+        return $this->where($map)->update($serviceInfo);
+    }
+
     public function query_all() {
         return $this->all();
     }

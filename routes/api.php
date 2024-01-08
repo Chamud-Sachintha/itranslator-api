@@ -56,3 +56,5 @@ Route::middleware('authToken')->post('send-admin-message', [AdminMessageControll
 Route::middleware('authToken')->post('get-order-message-list', [AdminMessageController::class, 'getMessageList']);
 
 Route::middleware('authToken')->post('get-pending-order-requests', [OrderRequests::class, 'getOrderRequestList']);
+Route::middleware('authToken')->post('get-service-info-by-id', [ServiceController::class, 'getServiceInfoById']);
+Route::middleware('authToken')->post('update-service-by-id', [ServiceController::class, 'updateServiceInfoById']);
