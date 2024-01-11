@@ -101,4 +101,32 @@ class TranslatedDocumentsController extends Controller
             }
         }
     }
+
+    public function removeUploadedDocumentById(Request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
+        $document = (is_null($request->document) || empty($request->document)) ? "" : $request->document;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($flag == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
+        } else if ($document == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Document is required.");
+        } else {
+
+            try {
+                $resp = $this->TranslateDocument->remove_by_id($document);
+
+                if ($resp) {
+                    return $this->AppHelper->responseMessageHandle(1, "Operation Complete");
+                } else {
+                    return $this->AppHelper->responseMessageHandle(0, "Operation Complete");
+                }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
 }
