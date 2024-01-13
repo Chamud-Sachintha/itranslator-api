@@ -60,3 +60,5 @@ Route::middleware('authToken')->post('get-service-info-by-id', [ServiceControlle
 Route::middleware('authToken')->post('update-service-by-id', [ServiceController::class, 'updateServiceInfoById']);
 
 Route::middleware('authToken')->post('delete-doc', [TranslatedDocumentsController::class, 'removeUploadedDocumentById']);
+Route::middleware('authToken')->post('get-order-info', [AdminOrderRequestController::class, 'getOrderInfo']);
+Route::middleware('authToken')->post('update-payment-status', [OrderRequests::class, 'updateOrderPaymentStatus']);

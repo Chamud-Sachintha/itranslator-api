@@ -51,6 +51,13 @@ class Order extends Model
         return $this->where($map)->update($map1);
     }
 
+    public function update_payment_status($invoiceNo) {
+        $map['invoice_no'] = $invoiceNo;
+        $map1['payment_status'] = 1;
+
+        return $this->where($map)->update($map1);
+    }
+
     public function get_by_id($oid) {
         $map['id'] = $oid;
 

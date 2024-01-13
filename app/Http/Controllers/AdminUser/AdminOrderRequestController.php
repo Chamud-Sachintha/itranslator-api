@@ -132,6 +132,47 @@ class AdminOrderRequestController extends Controller
         }
     }
 
+    public function getOrderInfo(Request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
+        $invoiceNo = (is_null($request->invoiceNo) || empty($request->invoiceNo)) ? "" : $request->invoiceNo;
+        $type = (is_null($request->type) || empty($request->type)) ? "" : $request->type;
+
+        if ($request_token == "") { 
+            return $this->AppHelper->responseMessageHandle(0, "Toekn is required.");
+        } else if ($flag == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
+        } else if ($invoiceNo == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Innvoice Number is required.");
+        } else {
+            
+            try {
+                $dataList = array();
+
+                if ($type == "TR") {
+                    $resp = $this->TranslationOrder->find_by_invoice($invoiceNo);
+
+                    $dataList['isHaveBankSlip'] = 0;
+
+                    if ($resp['payment_type'] == 1) {
+                        $dataList['paymentMethod'] = "Bank Deposit";
+                        $dataList['bankSlip'] = $resp['bank_slip'];
+                        $dataList['isHaveBankSlip'] = 1;
+                    } else {
+                        $dataList['paymentMethod'] = "Online Payment";
+                    }
+                } else if ($type == "NS") {
+                    // $resp = $this->NotaryServiceOrder->find
+                }
+
+                return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
+
     public function getTranslateOrderDocuments(Request $request) {
 
         $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
@@ -247,7 +288,12 @@ class AdminOrderRequestController extends Controller
                 }
 
                 $dataList[$key]['createTime'] = $value['create_time'];
-                $dataList[$key]['assignedTime'] = $orderAssignInfo['create_time'];
+
+                if ($orderAssignInfo) {
+                    $dataList[$key]['assignedTime'] = $orderAssignInfo['create_time'];
+                } else {
+                    $dataList[$key]['assignedTime'] = "0";
+                }
             }
 
             return $dataList;
