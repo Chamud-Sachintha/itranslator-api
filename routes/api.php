@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminUser\AdminOrderRequestController;
 use App\Http\Controllers\AdminUser\AdminTaskController;
 use App\Http\Controllers\AdminUser\TranslatedDocumentsController;
 use App\Http\Controllers\Authcontroller;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\MainNotaryServiceCategoryController;
 use App\Http\Controllers\OrderRequests;
 use App\Http\Controllers\ServiceController;
@@ -62,3 +63,5 @@ Route::middleware('authToken')->post('update-service-by-id', [ServiceController:
 Route::middleware('authToken')->post('delete-doc', [TranslatedDocumentsController::class, 'removeUploadedDocumentById']);
 Route::middleware('authToken')->post('get-order-info', [AdminOrderRequestController::class, 'getOrderInfo']);
 Route::middleware('authToken')->post('update-payment-status', [OrderRequests::class, 'updateOrderPaymentStatus']);
+Route::middleware('authToken')->post('get-clients', [ClientController::class, 'getAllClientList']);
+Route::middleware('authToken')->post('update-order-status', [AdminOrderRequestController::class, 'updateOrderStatusByInvoice']);

@@ -51,6 +51,13 @@ class Order extends Model
         return $this->where($map)->update($map1);
     }
 
+    public function update_order_status_admin($orderInfo) {
+        $map['invoice_no'] = $orderInfo['invoiceNo'];
+        $map1['order_status'] = $orderInfo['orderStatus'];
+
+        return $this->where($map)->update($map1);
+    }
+
     public function update_payment_status($invoiceNo) {
         $map['invoice_no'] = $invoiceNo;
         $map1['payment_status'] = 1;
@@ -68,5 +75,11 @@ class Order extends Model
         $map['invoice_no'] = $invoiceNo;
 
         return $this->where($map)->first();
+    }
+
+    public function get_order_count_by_client($clientId) {
+        $map['client_id'] = $clientId;
+
+        return $this->where($map)->whereNotIn('payment_status', [2])->count();
     }
 }

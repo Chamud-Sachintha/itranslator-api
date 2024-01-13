@@ -68,4 +68,8 @@ class Client extends Model
 
         return $this->where($map)->first();
     }
+
+    public function get_all() {
+        return $this->all();
+    }
 }
