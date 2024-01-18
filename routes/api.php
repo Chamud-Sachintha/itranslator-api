@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminUser\AdminMessageController;
 use App\Http\Controllers\AdminUser\AdminOrderAssignController;
 use App\Http\Controllers\AdminUser\AdminOrderRequestController;
 use App\Http\Controllers\AdminUser\AdminTaskController;
+use App\Http\Controllers\AdminUser\NotaryOrderPaymentController;
 use App\Http\Controllers\AdminUser\TranslatedDocumentsController;
 use App\Http\Controllers\Authcontroller;
 use App\Http\Controllers\ClientController;
@@ -65,3 +66,7 @@ Route::middleware('authToken')->post('get-order-info', [AdminOrderRequestControl
 Route::middleware('authToken')->post('update-payment-status', [OrderRequests::class, 'updateOrderPaymentStatus']);
 Route::middleware('authToken')->post('get-clients', [ClientController::class, 'getAllClientList']);
 Route::middleware('authToken')->post('update-order-status', [AdminOrderRequestController::class, 'updateOrderStatusByInvoice']);
+
+Route::middleware('authToken')->post('get-ns-order-payment-status', [NotaryOrderPaymentController::class, 'getNotaryOrderPaymentInfo']);
+Route::middleware('authToken')->post('get-notary-order-by-invoice', [NotaryOrderPaymentController::class, 'getOrderInfoByInvoice']);
+Route::middleware('authToken')->post('add-payment-log', [NotaryOrderPaymentController::class, 'setPaymentInforByInvoice']);
