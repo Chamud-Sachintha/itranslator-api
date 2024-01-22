@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\AppHelper;
 use App\Models\Client;
+use App\Models\NotaryServiceOrder;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -12,12 +13,14 @@ class OrderRequests extends Controller
     private $AppHelper;
     private $Order;
     private $Client;
+    private $NotaryOrder;
 
     public function __construct()
     {
         $this->AppHelper = new AppHelper();
         $this->Order = new Order();
         $this->Client = new Client();
+        $this->NotaryOrder = new NotaryServiceOrder();
     }
 
     public function getOrderRequestList(Request $request) {
@@ -83,9 +86,9 @@ class OrderRequests extends Controller
                 if ($ext[0] == "TR") {
                     $resp = $this->Order->update_payment_status($invoiceNo);
                 } else if ($ext[0] == "NS") {
-
+                    $resp = $this->NotaryOrder->update_payment_status($invoiceNo);
                 } else {
-
+                    return $this->AppHelper->responseMessageHandle(0, "Invalid Invoice");
                 }
 
                 if ($resp) {

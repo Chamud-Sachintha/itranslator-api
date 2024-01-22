@@ -43,6 +43,15 @@ class NotaryOrderPaymentController extends Controller
                     $dataList['secondDocType'] = json_decode($resp->doc_2);
                     $dataList['thirdDocType'] = json_decode($resp->doc_3);
 
+                    $dataList['showNotice'] = false;
+
+                    if ($resp['bank_slip'] == null) {
+                        $dataList['showNotice'] = true;
+                    }
+
+                    $dataList['paymentStatus'] = $resp['payment_status'];
+                    $dataList['orderStatus'] = $resp['order_status'];
+
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
                 } else {
                     return $this->AppHelper->responseMessageHandle(0, "Invalid Invoice No");

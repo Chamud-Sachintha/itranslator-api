@@ -168,7 +168,17 @@ class AdminOrderRequestController extends Controller
                         $dataList['paymentMethod'] = "Online Payment";
                     }
                 } else if ($type == "NS") {
-                    // $resp = $this->NotaryServiceOrder->find
+                    $resp = $this->NotaryServiceOrder->get_by_invoice_id($invoiceNo);
+
+                    $dataList['isHaveBankSlip'] = 0;
+
+                    if ($resp['payment_type'] == 1) {
+                        $dataList['paymentMethod'] = "Bank Deposit";
+                        $dataList['bankSlip'] = $resp['bank_slip'];
+                        $dataList['isHaveBankSlip'] = 1;
+                    } else {
+                        $dataList['paymentMethod'] = "Pending";
+                    }
                 }
 
                 return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
