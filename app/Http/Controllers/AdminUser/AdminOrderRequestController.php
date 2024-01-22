@@ -79,6 +79,11 @@ class AdminOrderRequestController extends Controller
                 $orderList = $this->NotaryServiceOrder->find_all_pending();
 
                 $dataList = array();
+                
+                if (count($orderList) == 0) {
+                    return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
+                }
+
                 foreach ($orderList as $key => $value) {
                     $orderAssign = $this->OrderAssign->get_by_invoice_id($value['invoice_no']);
 
@@ -232,8 +237,6 @@ class AdminOrderRequestController extends Controller
                 $resp = null;
                 if ($ext[0] == "TR") {
                     $resp = $this->TranslationOrder->update_order_status_admin($orderInfo);
-                } else if ($ext[0] == "NS") {
-
                 }
 
                 if ($resp) {

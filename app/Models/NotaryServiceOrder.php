@@ -10,6 +10,7 @@ class NotaryServiceOrder extends Model
     use HasFactory;
 
     protected $fillable = [
+        'client_id',
         'invoice_no',
         'main_category',
         'sub_category',
@@ -29,14 +30,22 @@ class NotaryServiceOrder extends Model
         'district',
         'land_reg_office',
         'notary_person_json',
+        'total_amt',
         'payment_status',
         'order_status',
+        'is_customer_complete',
         'create_time',
         'modified_time'
     ];
 
     public function find_all_pending() {
         $map['order_status'] = 0;
+
+        return $this->where($map)->get();
+    }
+
+    public function find_all_payment_pending() {
+        $map['payment_status'] = 0;
 
         return $this->where($map)->get();
     }
@@ -55,6 +64,20 @@ class NotaryServiceOrder extends Model
     public function update_order_status($invoiceNo) {
         $map['invoice_no'] = $invoiceNo;
         $map1['order_status'] = 1;
+
+        return $this->where($map)->update($map1);
+    }
+
+    public function update_order_status_admin($orderInfo) {
+        $map['invoice_no'] = $orderInfo['invoiceNo'];
+        $map1['order_status'] = $orderInfo['orderStatus'];
+
+        return $this->where($map)->update($map1);
+    }
+
+    public function set_total_amount_of_order($invoiceNo, $totalAmount) {
+        $map['invoice_no'] = $invoiceNo;
+        $map1['total_amt'] = $totalAmount;
 
         return $this->where($map)->update($map1);
     }

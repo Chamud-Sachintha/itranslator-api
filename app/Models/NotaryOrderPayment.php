@@ -45,4 +45,10 @@ class NotaryOrderPayment extends Model
     public function add_log($paymentInfo) {
         return $this->create($paymentInfo);
     }
+
+    public function get_log_by_invoiceNo($invoiceNo) {
+        $map['invoiceNo'] = $invoiceNo;
+
+        return $this->where($map)->first();
+    }
 }

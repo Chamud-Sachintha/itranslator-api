@@ -36,6 +36,7 @@ class CreateNotaryServiceOrdersTable extends Migration
             $table->string('notary_person_json');
             $table->string('payment_status');
             $table->string('order_status');
+            $table->integer('is_customer_complete');
             $table->integer('create_time');
             $table->integer('modified_time');
             $table->timestamps();
