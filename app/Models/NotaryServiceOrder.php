@@ -45,9 +45,9 @@ class NotaryServiceOrder extends Model
     }
 
     public function find_all_payment_pending() {
-        $map['payment_status'] = 0;
+        // $map['order_status'] != 3;
 
-        return $this->where($map)->get();
+        return $this->whereNotIn('order_status' , [3])->get();
     }
 
     public function update_payment_status($invoiceNo) {

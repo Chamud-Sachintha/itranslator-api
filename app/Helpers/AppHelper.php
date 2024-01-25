@@ -38,6 +38,16 @@ class AppHelper {
     public function get_date_and_time() {
         return strtotime("now");
     }
+
+    public function convertToNumber($number) {
+        try {
+            $convertedNumber = (float) $number;
+        } catch (\Exception $e) {
+            return 0;
+        }
+
+        return $convertedNumber;
+    }
 }
 
 ?>

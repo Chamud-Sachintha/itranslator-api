@@ -51,4 +51,9 @@ class NotaryOrderPayment extends Model
 
         return $this->where($map)->first();
     }
+
+    public function update_log($paymentInfo) {
+        dd($paymentInfo);
+        return $this->update($paymentInfo);
+    }
 }

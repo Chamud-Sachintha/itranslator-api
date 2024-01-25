@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminUser\AdminMessageController;
 use App\Http\Controllers\AdminUser\AdminOrderAssignController;
 use App\Http\Controllers\AdminUser\AdminOrderRequestController;
 use App\Http\Controllers\AdminUser\AdminTaskController;
+use App\Http\Controllers\AdminUser\CSServiceController;
 use App\Http\Controllers\AdminUser\NotaryOrderPaymentController;
 use App\Http\Controllers\AdminUser\TranslatedDocumentsController;
 use App\Http\Controllers\Authcontroller;
@@ -49,8 +50,10 @@ Route::middleware('authToken')->post('get-admin-user-list', [AdminController::cl
 Route::middleware('authToken')->post('get-tr-orders', [AdminOrderRequestController::class, 'getAllTranslationOrderList']);
 Route::middleware('authToken')->post('assign-order', [AdminOrderAssignController::class, 'assignOrder']);
 Route::middleware('authToken')->post('get-ns-orders', [AdminOrderRequestController::class, 'getNotaruyServiceOrderList']);
+Route::middleware('authToken')->post('get-cs-orders', [CSServiceController::class, 'getCSServiceOrderList']);
 Route::middleware('authToken')->post('get-tr-task-list', [AdminTaskController::class, 'getAllTranslateTaskList']);
 Route::middleware('authToken')->post('get-ns-task-list', [AdminTaskController::class, 'getNotaryTaskList']);
+Route::middleware('authToken')->post('get-cs-task-list', [CSServiceController::class, 'getCSTaskList']);
 Route::middleware('authToken')->post('get-order-info-by-invoice', [AdminOrderRequestController::class, 'getOrderDetailsByInvoice']); 
 
 Route::middleware('authToken')->post('upload-translated-docs', [TranslatedDocumentsController::class, 'submitTranslatedDocumentsForOrder']);
@@ -78,3 +81,4 @@ Route::middleware('authToken')->post('get-notary-documents', [NotaryDocumentsCon
 Route::middleware('authToken')->post('update-ns-order-by-admin', [NotaryOrderPaymentController::class, 'updateOrderStatusByInvoice']);
 
 Route::middleware('authToken')->post('get-ns-order-request-list', [NotaryOrderRequestController::class, 'getAllPendingNotaryOrderList']);
+Route::middleware('authToken')->post('get-cs-order-info-by-invoice', [CSServiceController::class, 'getOrderInfoByInvoice']);

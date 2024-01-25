@@ -6,6 +6,7 @@ use App\Helpers\AppHelper;
 use App\Http\Controllers\Controller;
 use App\Models\AdminOrderAssign;
 use App\Models\AdminUser;
+use App\Models\CSService;
 use App\Models\NotaryServiceOrder;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class AdminOrderAssignController extends Controller
     private $AdminUser;
     private $TranslateOrder;
     private $NotaryServiceOrder;
+    private $CSOrder;
 
     public function __construct()
     {
@@ -25,6 +27,7 @@ class AdminOrderAssignController extends Controller
         $this->AdminUser = new AdminUser();
         $this->TranslateOrder = new Order();
         $this->NotaryServiceOrder = new NotaryServiceOrder();
+        $this->CSOrder = new CSService();
     }
 
     public function assignOrder(Request $request) {
@@ -67,6 +70,8 @@ class AdminOrderAssignController extends Controller
                     $resp1 = $this->TranslateOrder->update_order_status($invoiceNo);
                 } else if ($type == "NS") {
                     $resp1 = $this->NotaryServiceOrder->update_order_status($invoiceNo);
+                } else if ($type == "CS") {
+                    $resp1 = $this->CSOrder->update_order_status($invoiceNo);
                 } else {
                     return $this->AppHelper->responseMessageHandle(0, "Invalid Order Type.");
                 }

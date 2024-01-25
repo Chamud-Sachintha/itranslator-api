@@ -51,6 +51,7 @@ class NotaryOrderPaymentController extends Controller
 
                     $dataList['paymentStatus'] = $resp['payment_status'];
                     $dataList['orderStatus'] = $resp['order_status'];
+                    $dataList['isCustomerComplete'] = $resp['is_customer_complete'];
 
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
                 } else {
@@ -136,7 +137,18 @@ class NotaryOrderPaymentController extends Controller
                 $paymentInfo["totalAmount"] = $totalAmount;
                 $paymentInfo['createTime'] = $this->AppHelper->get_date_and_time();
 
-                $resp = $this->NotaryPaymentLog->add_log($paymentInfo);
+                $validate_log = $this->NotaryPaymentLog->get_log_by_invoiceNo($invoiceNo);
+
+                $resp = null;
+
+                if (empty($validate_log)) {
+                    $resp = $this->NotaryPaymentLog->add_log($paymentInfo);
+                } else {
+                    $paymentInfo['id'] = $validate_log['id'];
+                    $model = $this->NotaryPaymentLog->find($validate_log['id']);
+
+                    $resp = $model->update($paymentInfo);
+                }
 
                 if ($resp) {
                     $this->NotaryOrder->set_total_amount_of_order($invoiceNo, $totalAmount);
@@ -172,7 +184,19 @@ class NotaryOrderPaymentController extends Controller
 
                 if ($resp) {
                     
+                    $dataList = $resp;
                     $dataList['isOrderPaymentSet'] = true;
+
+                    if ($resp['totalAmount'] != "0.00" || $resp['totalAmount'] != "0") {
+                        $amountInArreas = $this->AppHelper->convertToNumber($resp['totalAmount']) - 
+                                        ($this->AppHelper->convertToNumber($resp['firstAdvance']) + $this->AppHelper->convertToNumber($resp['secondAdvance']) + 
+                                        $this->AppHelper->convertToNumber($resp['thirdAdvance']) + $this->AppHelper->convertToNumber($resp['forthAdvance']) + $this->AppHelper->convertToNumber($resp['fifthAdvance']) + 
+                                        $this->AppHelper->convertToNumber($resp['finalPayment']));
+                    } else {
+                        $amountInArreas = 0;
+                    }
+
+                    $dataList['amountInArreas'] = $amountInArreas;
 
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
                 } else {
@@ -209,7 +233,7 @@ class NotaryOrderPaymentController extends Controller
                 $orderInfo['orderStatus'] = $orderStatus;
 
                 $resp = null;
-                if ($ext[0] == "TR") {
+                if ($ext[0] == "NS") {
                     $resp = $this->NotaryOrder->update_order_status_admin($orderInfo);
                 }
 
