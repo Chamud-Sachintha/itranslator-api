@@ -5,23 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class NotaryOrderPayment extends Model
+class CsPaymentModel extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         "invoiceNo",
-        "extSearch",
-        "secondCopyCheck",
-        "obtainExt",
-        "obtainSecondCpyTaking",
-        "prepOfTitle",
-        "photographyFees",
+        "companyNameApproval",
+        "form1",
+        "form10",
+        "form13",
+        "form15",
+        "form18",
+        "form20",
+        "copyCharges",
+        "articleFees",
+        "amendmendFees",
+        "annualFees",
+        "panalties",
+        "other",
         "govStampDuty",
-        "regFees",
-        "transpotationFees",
-        "notaryFees",
-        "expServiceCharge",
+        "companySecFees",
+        "expServiceCharges",
         "refCommision",
         "postageCharge",
         "fullChargeOfServiceProvision",
@@ -42,10 +47,6 @@ class NotaryOrderPayment extends Model
         "createTime"
     ];
 
-    public function add_log($paymentInfo) {
-        return $this->create($paymentInfo);
-    }
-
     public function get_log_by_invoiceNo($invoiceNo) {
         $map['invoiceNo'] = $invoiceNo;
 
@@ -54,5 +55,9 @@ class NotaryOrderPayment extends Model
 
     public function update_log($paymentInfo) {
         return $this->update($paymentInfo);
+    }
+
+    public function add_log($info) {
+        return $this->create($info);
     }
 }

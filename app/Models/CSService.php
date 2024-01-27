@@ -41,6 +41,13 @@ class CSService extends Model
         return $this->where($map)->update($map1);
     }
 
+    public function set_total_amount_of_order($invoiceNo, $totalAmount) {
+        $map['invoice_no'] = $invoiceNo;
+        $map1['total_amount'] = $totalAmount;
+
+        return $this->where($map)->update($map1);
+    }
+
     public function get_by_invoice_id($invoiceId) {
         $map['invoice_no'] = $invoiceId;
 
