@@ -76,4 +76,62 @@ class MainNotaryServiceCategoryController extends Controller
             }
         }
     }
+
+    public function updateMainNotaryCategory(Request $request) {
+
+        $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
+        $categoryId = (is_null($request->categoryId) || empty($request->categoryId)) ? "" : $request->categoryId;
+        $categoryName = (is_null($request->categoryName) || empty($request->categoryName)) ? "" : $request->categoryName;
+
+        if ($flag == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Role is required.");
+        } else if ($categoryId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Category ID is required.");
+        } else if ($categoryName == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Category Name is required.");
+        } else {
+            try {
+                $categoryInfo = array();
+
+                $categoryInfo['categoryId'] = $categoryId;
+                $categoryInfo['categoryName'] = $categoryName;
+
+                $resp = $this->MainNotaryServiceCategory->update_by_id($categoryInfo);
+
+                if ($resp) {
+                    return $this->AppHelper->responseMessageHandle(1, "Opeartion Cimplete");
+                } else {
+                    return $this->AppHelper->responseMessageHandle(0, "Error Occured.");
+                }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0,$e->getMessage());
+            }
+        }
+    }
+
+    public function getCategoryInfoById(Request $request) {
+
+        $categoryId = (is_null($request->categoryId) || empty($request->categoryId)) ? "" : $request->categoryId;
+        $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
+
+        if ($categoryId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Category ID is required.");
+        } else if ($flag == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Role is required.");
+        } else {
+
+            try {
+                $resp = $this->MainNotaryServiceCategory->find_by_id($categoryId);
+
+                $dataList = array();
+                if ($resp) {
+                    // $dataList['categoryId'] = 
+                } else {
+                    return $this->AppHelper->responseMessageHandle(0, "Invalid Category Id");
+                }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0,$e->getMessage());
+            }
+        }
+    }
 }

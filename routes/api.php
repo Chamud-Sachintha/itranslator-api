@@ -85,3 +85,6 @@ Route::middleware('authToken')->post('update-ns-order-by-admin', [NotaryOrderPay
 
 Route::middleware('authToken')->post('get-ns-order-request-list', [NotaryOrderRequestController::class, 'getAllPendingNotaryOrderList']);
 Route::middleware('authToken')->post('get-cs-order-info-by-invoice', [CSServiceController::class, 'getOrderInfoByInvoice']);
+Route::middleware('authToken')->post('update-main-notary-category', [MainNotaryServiceCategoryController::class, 'updateMainNotaryCategory']);
+Route::middleware('authToken')->post('update-sub-ns-category', [SubNotaryServiceCategoryController::class, 'updateSubCategoryById']);
+Route::middleware('authToken')->post('get-sub-ns-category-list', [SubNotaryServiceCategoryController::class, 'getAllSubNotaryCategoryList']);
