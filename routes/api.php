@@ -17,6 +17,7 @@ use App\Http\Controllers\NotaryOrderRequestController;
 use App\Http\Controllers\OrderRequests;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SubNotaryServiceCategoryController;
+use App\Http\Controllers\SuperAdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -88,3 +89,4 @@ Route::middleware('authToken')->post('get-cs-order-info-by-invoice', [CSServiceC
 Route::middleware('authToken')->post('update-main-notary-category', [MainNotaryServiceCategoryController::class, 'updateMainNotaryCategory']);
 Route::middleware('authToken')->post('update-sub-ns-category', [SubNotaryServiceCategoryController::class, 'updateSubCategoryById']);
 Route::middleware('authToken')->post('get-sub-ns-category-list', [SubNotaryServiceCategoryController::class, 'getAllSubNotaryCategoryList']);
+Route::middleware('authToken')->post('get-sa-dashboard-data', [SuperAdminController::class, 'getDashboardCounts']);

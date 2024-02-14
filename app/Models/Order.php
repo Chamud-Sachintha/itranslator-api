@@ -71,6 +71,10 @@ class Order extends Model
         return $this->where($map)->first();
     }
 
+    public function get_all() {
+        return $this->all();
+    }
+
     public function find_by_invoice($invoiceNo) {
         $map['invoice_no'] = $invoiceNo;
 

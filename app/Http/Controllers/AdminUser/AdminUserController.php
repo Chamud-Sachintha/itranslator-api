@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\AdminUser;
 
 use App\Helpers\AppHelper;
+use App\Http\Controllers\Controller;
 use App\Models\AdminOrderAssign;
 use App\Models\NotaryServiceOrder;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
-class SuperAdminController extends Controller
+class AdminUserController extends Controller
 {
     private $AppHelper;
     private $TrOrder;

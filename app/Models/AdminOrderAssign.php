@@ -23,6 +23,10 @@ class AdminOrderAssign extends Model
         return $this->create($map);
     }
 
+    public function get_assigned_count() {
+        return $this->all();
+    }
+
     public function get_by_invoice_id($invoiceId) {
         $map['invoice_no'] = $invoiceId;
 

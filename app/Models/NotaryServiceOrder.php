@@ -88,4 +88,8 @@ class NotaryServiceOrder extends Model
 
         return $this->where($map)->update($map1);
     }
+
+    public function get_all() {
+        return $this->all();
+    }
 }
