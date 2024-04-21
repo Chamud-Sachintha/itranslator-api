@@ -14,7 +14,7 @@ class AdminOrderAssign extends Model
         'admin_id',
         'create_time'
     ];
-
+//fixed
     public function add_log($orderInfo) {
         $map['invoice_no'] = $orderInfo['invoiceNo'];
         $map['admin_id'] = $orderInfo['adminId'];
