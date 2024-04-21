@@ -57,8 +57,9 @@ class AdminOrderRequestController extends Controller
                         $dataList[$key]['createTime'] = $value['create_time'];
                     }
 
-                    return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
+                   
                 }
+                return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }
@@ -96,8 +97,9 @@ class AdminOrderRequestController extends Controller
                         
                     }
 // fix error 
-                    return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
+                    
                 }
+                return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }
