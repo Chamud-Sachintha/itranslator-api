@@ -101,4 +101,44 @@ class NotaryDocumentsController extends Controller
             }
         }
     }
+
+    public function RemoveNotaryDocumentsForOrder(Request $request){
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
+        $document = (is_null($request->invoiceNo) || empty($request->document)) ? "" : $request->document;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($flag == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
+        } else if ($document == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Document is required.");
+        } else {
+
+            try {
+                
+                $FileDirectory = public_path('/notary_docs');
+                $FilePath = $FileDirectory .'/'. $document;
+                
+                        if (file_exists($FilePath)) {
+                            unlink($FilePath);
+                            echo "Deleted: " . $FilePath . "\n";
+                        } else {
+                            echo "File not found: " . $FilePath . "\n";
+                        }
+                
+
+                    $resp = $this->NotaryDocument->remove_by_id($document);
+
+                
+                if ($resp) {
+                    return $this->AppHelper->responseMessageHandle(1, "Operation Complete");
+                } else {
+                    return $this->AppHelper->responseMessageHandle(0, "Operation Complete");
+                }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
 }

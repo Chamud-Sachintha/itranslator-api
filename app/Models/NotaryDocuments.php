@@ -28,4 +28,10 @@ class NotaryDocuments extends Model
 
         return $this->where($map)->get();
     }
+
+    public function remove_by_id($document){
+        $map['document'] = $document;
+
+        return $this->where($map)->delete();
+    }
 }

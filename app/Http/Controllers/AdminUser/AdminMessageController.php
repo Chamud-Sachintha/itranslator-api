@@ -9,6 +9,7 @@ use App\Models\AdminMessage;
 use App\Models\AdminUser;
 use App\Models\Client;
 use App\Models\Order;
+use App\Models\NotaryServiceOrder;
 
 class AdminMessageController extends Controller
 {
@@ -17,11 +18,13 @@ class AdminMessageController extends Controller
     private $AdminMessage;
     private $AdminUser;
     private $ClientInfo;
+    private $NotaryOrder;
 
     public function __construct()
     {
         $this->AppHelper = new AppHelper();
         $this->Order = new Order();
+        $this->NotaryOrder = new NotaryServiceOrder();
         $this->AdminMessage = new AdminMessage();
         $this->AdminUser = new AdminUser();
         $this->ClientInfo = new Client();
@@ -44,7 +47,15 @@ class AdminMessageController extends Controller
             return $this->AppHelper->responseMessageHandle(0, "Message is required.");
         } else {
             try {
-                $order = $this->Order->find_by_invoice(($invoiceNo));
+                $prefix = substr($invoiceNo, 0, 2);
+                if ($prefix === "NS") {
+                    $order = $this->NotaryOrder->get_by_invoice_id(($invoiceNo));
+                } else if ($prefix === "TR") {
+                    $order = $this->Order->find_by_invoice(($invoiceNo));
+                }else{
+
+                }
+                
 
                 if ($order) {
 
@@ -86,7 +97,14 @@ class AdminMessageController extends Controller
         } else {
 
             try {
-                $order = $this->Order->find_by_invoice($invoiceNo);
+                $prefix = substr($invoiceNo, 0, 2);
+                if ($prefix === "NS") {
+                    $order = $this->NotaryOrder->get_by_invoice_id(($invoiceNo));
+                } else if ($prefix === "TR") {
+                    $order = $this->Order->find_by_invoice(($invoiceNo));
+                }else{
+
+                }
 
                 if ($order) {
                     $messageList = $this->AdminMessage->get_by_order_id($order->id);

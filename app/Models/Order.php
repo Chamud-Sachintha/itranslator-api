@@ -44,6 +44,11 @@ class Order extends Model
         return $this->whereIn('order_status', $orderStatusValues)->get();
     }
 
+    public function get_taken_or_complete_list() {
+        $orderStatusValues = [3];
+        return $this->whereIn('order_status', $orderStatusValues)->get();
+    }
+
     public function update_order_status($invoiceNo) {
         $map['invoice_no'] = $invoiceNo;
         $map1['order_status'] = 1;

@@ -56,6 +56,11 @@ Route::middleware('authToken')->post('get-cs-orders', [CSServiceController::clas
 Route::middleware('authToken')->post('get-tr-task-list', [AdminTaskController::class, 'getAllTranslateTaskList']);
 Route::middleware('authToken')->post('get-ns-task-list', [AdminTaskController::class, 'getNotaryTaskList']);
 Route::middleware('authToken')->post('get-cs-task-list', [CSServiceController::class, 'getCSTaskList']);
+
+Route::middleware('authToken')->post('get-complete-tr-task-list', [AdminTaskController::class, 'getCompleteAllTranslateTaskList']);
+Route::middleware('authToken')->post('get-complete-ns-task-list', [AdminTaskController::class, 'getCompleteNotaryTaskList']);
+Route::middleware('authToken')->post('get-complete-cs-task-list', [CSServiceController::class, 'getCompleteCSTaskList']);
+
 Route::middleware('authToken')->post('get-order-info-by-invoice', [AdminOrderRequestController::class, 'getOrderDetailsByInvoice']); 
 
 Route::middleware('authToken')->post('upload-translated-docs', [TranslatedDocumentsController::class, 'submitTranslatedDocumentsForOrder']);
@@ -90,3 +95,5 @@ Route::middleware('authToken')->post('update-main-notary-category', [MainNotaryS
 Route::middleware('authToken')->post('update-sub-ns-category', [SubNotaryServiceCategoryController::class, 'updateSubCategoryById']);
 Route::middleware('authToken')->post('get-sub-ns-category-list', [SubNotaryServiceCategoryController::class, 'getAllSubNotaryCategoryList']);
 Route::middleware('authToken')->post('get-sa-dashboard-data', [SuperAdminController::class, 'getDashboardCounts']);
+
+Route::middleware('authToken')->post('Remove-documents', [NotaryDocumentsController::class, 'RemoveNotaryDocumentsForOrder']);

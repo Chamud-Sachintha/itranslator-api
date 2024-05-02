@@ -32,4 +32,5 @@ class AdminOrderAssign extends Model
 
         return $this->where($map)->first();
     }
+    
 }
