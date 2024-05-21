@@ -18,6 +18,8 @@ use App\Http\Controllers\OrderRequests;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SubNotaryServiceCategoryController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\LegalAdviceController;
+use App\Http\Controllers\LGServicesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -97,3 +99,8 @@ Route::middleware('authToken')->post('get-sub-ns-category-list', [SubNotaryServi
 Route::middleware('authToken')->post('get-sa-dashboard-data', [SuperAdminController::class, 'getDashboardCounts']);
 
 Route::middleware('authToken')->post('Remove-documents', [NotaryDocumentsController::class, 'RemoveNotaryDocumentsForOrder']);
+Route::middleware('authToken')->post('get-lg-orders', [LegalAdviceController::class, 'getLegalRequest']);
+Route::middleware('authToken')->post('assign-lg-order', [LegalAdviceController::class, 'AssignLegalRequest']);
+Route::middleware('authToken')->post('get-lg-Task', [LegalAdviceController::class, 'getLegalTask']);
+Route::middleware('authToken')->post('get-admin-Lmessage', [LegalAdviceController::class, 'getadminLmessage']);
+Route::middleware('authToken')->post('send-admin-Lmessage', [LegalAdviceController::class, 'sendadminLmessage']);
