@@ -61,4 +61,11 @@ class LegalAdviceSerivce extends Model
 
             return $query;
     }
+
+    public function Get_Doc_Details($OrderNo){
+
+        $query = $this->where('order_no', $OrderNo)->pluck('filename');
+
+        return $query;
+    }
 }

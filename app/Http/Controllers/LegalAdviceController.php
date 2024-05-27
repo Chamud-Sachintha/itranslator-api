@@ -302,6 +302,7 @@ class LegalAdviceController extends Controller
         $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
         $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
         $OrderNo = (is_null($request->OrderNo) || empty($request->OrderNo)) ? "" : $request->OrderNo;
+        $LegalDoc = $request->hasFile('Doc') ? $request->file('Doc') : [];
 
         if ($request_token == "") {
             return $this->AppHelper->responseMessageHandle(0, "Token is required.");
@@ -355,4 +356,124 @@ class LegalAdviceController extends Controller
         }
                 
     }
+
+
+    public function getLegalDocs(Request $request){
+
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
+        $OrderNo = (is_null($request->OrderNo) || empty($request->OrderNo)) ? "" : $request->OrderNo;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($flag == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
+        } else if ($OrderNo == "") {
+            return $this->AppHelper->responseMessageHandle(0, "OrderNo No is required.");
+        } else {
+
+            try {
+                
+                $resp = $this->LegalAdviceSerivce->Get_Doc_Details($OrderNo);
+                foreach ($resp as $resp) {
+                    if ($resp !== null) {
+                        $filteredItems[] = $resp;
+                    }
+                }
+               
+               
+          
+                    return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $filteredItems);
+                
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+
+    }
+
+    public function getLegalFDocs(Request $request){
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
+        $OrderNo = (is_null($request->OrderNo) || empty($request->OrderNo)) ? "" : $request->OrderNo;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($flag == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
+        } else if ($OrderNo == "") {
+            return $this->AppHelper->responseMessageHandle(0, "DocName  is required.");
+        } else {
+
+            try {
+                
+                $resp = $this->LegalAdvice->Get_Doc_Details($OrderNo);
+               
+                    return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $resp);
+                
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
+
+    public function viewLegalDocs(Request $request){
+        $request_token = $request->input('token', ''); 
+        $flag = $request->input('flag', ''); 
+        $DocName = $request->input('DocName', ''); 
+    
+        if (empty($request_token)) {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if (empty($flag)) {
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
+        } else if (empty($DocName)) {
+            return $this->AppHelper->responseMessageHandle(0, "DocName is required.");
+        } else {
+            
+            $formated_dir = "Legal/";
+            $filePath = public_path($formated_dir . $DocName); 
+    
+            if (!file_exists($filePath)) {
+                return $this->AppHelper->responseMessageHandle(0, "File not found.");
+            }
+            else
+            {
+                return $this->AppHelper->responseMessageHandle(1, "File  found.");
+            }
+    
+        }
+    }
+    
+    public function getLegalComplete(Request $request){
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else {
+
+            $adminInfo = $this->AdminUser->find_by_token($request_token);
+          
+            $resp = $this->LegalAdviceSerivce->Get_All_Task_Details($adminInfo['id']);
+
+            $dataList = array();
+            foreach($resp as $key => $value){
+                $wer = $this->LegalAdvice->gettaskdata( $value->order_no);
+
+               // DD($wer);
+                foreach($wer as $key => $value2){
+                $dataList[$key]['id'] = $value2['ID'];
+                $dataList[$key]['message'] = $value2['Message'];
+                $dataList[$key]['OrderNo'] = $value2['OrderNo'];
+                $dataList[$key]['Status'] = $value2['Status'];
+                $dataList[$key]['createTime'] = $value2['create_time'];
+                }
+            }
+
+          
+                  
+                    return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
+        }
+    }
+
 }

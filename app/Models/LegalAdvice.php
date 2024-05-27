@@ -68,9 +68,16 @@ class LegalAdvice extends Model
     public function gettaskdata($OrderNo){
 
         $map['OrderNo'] = $OrderNo;
-        $map1['Status'] = 1;
+        $map1['Status'] = 2;
 
         return $this->where($map)->get();
+    }
+
+    public function Get_Doc_Details($OrderNo){
+        $map['OrderNo'] = $OrderNo;
+        
+
+        return $this->where($map)->pluck('UploadFiles');
     }
 
 }
