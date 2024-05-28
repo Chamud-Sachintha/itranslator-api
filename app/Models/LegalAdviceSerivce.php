@@ -28,6 +28,7 @@ class LegalAdviceSerivce extends Model
         $map['message'] = $dataList['Message'];
         $map['sent_from'] = $dataList['Adminid'];
         $map['sent_to'] = $dataList['Client_ID'];
+        $map['filename'] = "[]";
         
        // DD($LegalMessage);
         return $this->create($map);
@@ -40,7 +41,15 @@ class LegalAdviceSerivce extends Model
         $map['message'] = $dataList['Message'];
         $map['sent_from'] = $dataList['Adminid'];
         $map['sent_to'] = $dataList['Client_ID'];
-        $map['filename'] = $dataList['filename'];
+        if(!empty($dataList['filename']))
+        {
+            $map['filename'] = $dataList['filename'];
+        }
+        else
+        {
+            $map['filename'] = "[]";
+        }
+       
         
         //DD($dataList);
         return $this->create($map);
@@ -49,18 +58,21 @@ class LegalAdviceSerivce extends Model
     public function Get_All_Task_Details($id){
         $query = $this->where('sent_from', $id)
         ->where('order_status', '=', 0)
-        ->get();
+        ->distinct()
+        ->pluck('order_no');
 
             return $query;
     }
 
-    public function Get_message_Details($OrderNo){
-        $query = $this->where('order_no', $OrderNo)
-        ->where('order_status', '=', 0)
-        ->get();
+    public function Get_message_Details($OrderNo)
+{
+    $query = $this->where('order_no', $OrderNo)
+                  ->where('order_status', '=', 0)
+                  ->orderBy('id')
+                  ->get();
 
-            return $query;
-    }
+    return $query;
+}
 
     public function Get_Doc_Details($OrderNo){
 

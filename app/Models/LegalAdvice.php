@@ -65,10 +65,10 @@ class LegalAdvice extends Model
 
     }
 
-    public function gettaskdata($OrderNo){
+    public function gettaskdata($value){
 
-        $map['OrderNo'] = $OrderNo;
-        $map1['Status'] = 2;
+        $map['OrderNo'] = $value;
+        $map['Status'] = 1;
 
         return $this->where($map)->get();
     }
@@ -78,6 +78,14 @@ class LegalAdvice extends Model
         
 
         return $this->where($map)->pluck('UploadFiles');
+    }
+
+    public function getCompltetaskdata($value){
+
+        $map['OrderNo'] = $value;
+        $map['Status'] = 2;
+
+        return $this->where($map)->get();
     }
 
 }

@@ -227,22 +227,30 @@ class LegalAdviceController extends Controller
             $adminInfo = $this->AdminUser->find_by_token($request_token);
           
             $resp = $this->LegalAdviceSerivce->Get_All_Task_Details($adminInfo['id']);
-
+           
             $dataList = array();
-            foreach($resp as $key => $value){
-                $wer = $this->LegalAdvice->gettaskdata( $value->order_no);
+           
+            /*$resp = $this->LegalAdviceSerivce->Get_All_Task_Details($adminInfo['id']);
 
-               // DD($wer);
-                foreach($wer as $key => $value2){
-                $dataList[$key]['id'] = $value2['ID'];
-                $dataList[$key]['message'] = $value2['Message'];
-                $dataList[$key]['OrderNo'] = $value2['OrderNo'];
-                $dataList[$key]['Status'] = $value2['Status'];
-                $dataList[$key]['createTime'] = $value2['create_time'];
+            $dataList = array();*/
+
+            for ($i = 0; $i < count($resp); $i++) {
+                $value = $resp[$i];  
+                $wer = LegalAdvice::where('Status', '=', 1)->where('OrderNo', '=', $value)->get();
+
+                foreach ($wer as $value2) {
+                    $dataList[] = [
+                        'id' => $value2['ID'],
+                        'message' => $value2['Message'],
+                        'OrderNo' => $value2['OrderNo'],
+                        'Status' => $value2['Status'],
+                        'createTime' => $value2['create_time']
+                    ];
                 }
             }
 
-          
+          //  DD($dataList);
+
                   
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
         }
@@ -380,6 +388,9 @@ class LegalAdviceController extends Controller
                     if ($resp !== null) {
                         $filteredItems[] = $resp;
                     }
+                    else{
+                        $filteredItems=[] ;
+                    }
                 }
                
                
@@ -457,8 +468,25 @@ class LegalAdviceController extends Controller
             $resp = $this->LegalAdviceSerivce->Get_All_Task_Details($adminInfo['id']);
 
             $dataList = array();
-            foreach($resp as $key => $value){
-                $wer = $this->LegalAdvice->gettaskdata( $value->order_no);
+
+            for ($i = 0; $i < count($resp); $i++) {
+                $value = $resp[$i];  
+                $wer = LegalAdvice::where('Status', '=', 2)->where('OrderNo', '=', $value)->get();
+
+                foreach ($wer as $value2) {
+                    $dataList[] = [
+                        'id' => $value2['ID'],
+                        'message' => $value2['Message'],
+                        'OrderNo' => $value2['OrderNo'],
+                        'Status' => $value2['Status'],
+                        'createTime' => $value2['create_time']
+                    ];
+                }
+            }
+
+
+           /* foreach($resp as $key => $value){
+                $wer = $this->LegalAdvice->getCompltetaskdata( $value);
 
                // DD($wer);
                 foreach($wer as $key => $value2){
@@ -468,7 +496,7 @@ class LegalAdviceController extends Controller
                 $dataList[$key]['Status'] = $value2['Status'];
                 $dataList[$key]['createTime'] = $value2['create_time'];
                 }
-            }
+            }*/
 
           
                   
