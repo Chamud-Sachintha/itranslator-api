@@ -40,7 +40,8 @@ class CSServiceController extends Controller
                 $orderList = $this->CSOrder->find_all_pending();
 
                 $dataList = array();
-                
+              
+             
                 if (count($orderList) == 0) {
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
                 }
@@ -56,8 +57,9 @@ class CSServiceController extends Controller
                         $dataList[$key]['createTime'] = $value['create_time'];
                     }
 
-                    return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
-                }
+                    
+               }
+               return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }
@@ -89,8 +91,8 @@ class CSServiceController extends Controller
                         $dataList[$key]['totalAmount'] = $value['total_amount'];
                         $dataList[$key]['paymentStatus'] = $value['payment_status'];
                         $dataList[$key]['orderStatus'] = $value['order_status'];
-                        $dataList[$key]['createTime'] = $value['create_time'];
-                        $dataList[$key]['assignedTime'] = $orderAssign['create_time'];
+                        $dataList[$key]['createTime'] = $value['created_at'];
+                        $dataList[$key]['assignedTime'] = $orderAssign['created_at'];
                     }
 
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
@@ -162,5 +164,38 @@ class CSServiceController extends Controller
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }
         }
+    }
+
+    public function updateCompleteCSTaskList(Request $request){
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $flag =(is_null($request->flag) || empty($request->flag)) ? "" : $request->token;
+        $invoiceNo = (is_null($request->invoiceNo) || empty($request->invoiceNo)) ? "" : $request->invoiceNo;
+        $orderStatus = (is_null($request->orderStatus) || empty($request->orderStatus)) ? "" : $request->orderStatus;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($flag == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
+        } else if ($invoiceNo == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Invoice No is required.");
+        } else if ($orderStatus == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Payment Status is required.");
+        } else {
+
+            try {
+                $orderInfo = array();
+                $orderInfo['invoiceNo'] = $invoiceNo;
+                $orderInfo['orderStatus'] = $orderStatus;
+
+                $resp = $this->CSOrder->update_order_status_admin($orderInfo);
+
+                if ($resp) {
+                    return $this->AppHelper->responseMessageHandle(1, "Opertion Complete");
+                } else {
+                    return $this->AppHelper->responseMessageHandle(0, "Error Occured.");
+                }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+                 }     }
     }
 }

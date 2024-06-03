@@ -30,12 +30,12 @@ class CSService extends Model
     }
 
     public function get_taken_or_processing_list() {
-        $orderStatusValues = [1, 2];
+        $orderStatusValues = [1];
         return $this->whereIn('order_status', $orderStatusValues)->get();
     }
 
     public function get_taken_or_complete_list() {
-        $orderStatusValues = [3];
+        $orderStatusValues = [2];
         return $this->whereIn('order_status', $orderStatusValues)->get();
     }
 
@@ -57,5 +57,12 @@ class CSService extends Model
         $map['invoice_no'] = $invoiceId;
 
         return $this->where($map)->first();
+    }
+
+    public function update_order_status_admin($orderInfo){
+        $map['invoice_no'] = $orderInfo['invoiceNo'];
+        $map1['order_status'] = $orderInfo['orderStatus'];
+
+        return $this->where($map)->update($map1);
     }
 }

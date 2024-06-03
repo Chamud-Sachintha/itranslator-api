@@ -62,6 +62,7 @@ Route::middleware('authToken')->post('get-cs-task-list', [CSServiceController::c
 Route::middleware('authToken')->post('get-complete-tr-task-list', [AdminTaskController::class, 'getCompleteAllTranslateTaskList']);
 Route::middleware('authToken')->post('get-complete-ns-task-list', [AdminTaskController::class, 'getCompleteNotaryTaskList']);
 Route::middleware('authToken')->post('get-complete-cs-task-list', [CSServiceController::class, 'getCompleteCSTaskList']);
+Route::middleware('authToken')->post('update-cs-order-Adminstatus', [CSServiceController::class, 'updateCompleteCSTaskList']);
 
 Route::middleware('authToken')->post('get-order-info-by-invoice', [AdminOrderRequestController::class, 'getOrderDetailsByInvoice']); 
 
