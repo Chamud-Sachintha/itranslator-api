@@ -20,10 +20,12 @@ class LegalAdviceController extends Controller
     private $AdminMessage;
     private $Order;
     private $Client;
+    private $ClientInfo;
     private $AdminUser;
     private $AdminOrderAssign;
     private $LegalAdvice;
     private $LegalAdviceSerivce;
+    private $NotaryServiceOrder;
 
     public function __construct()
     {
@@ -31,6 +33,7 @@ class LegalAdviceController extends Controller
         $this->Order = new Order();
         $this->AdminMessage = new AdminMessage();
         $this->Client = new Client();
+        $this->ClientInfo = new Client();
         $this->AdminUser = new AdminUser();
         $this->AdminOrderAssign = new AdminOrderAssign();
         $this->NotaryServiceOrder = new NotaryServiceOrder();

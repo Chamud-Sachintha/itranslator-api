@@ -80,4 +80,6 @@ class LegalAdviceSerivce extends Model
 
         return $query;
     }
+
+    
 }
