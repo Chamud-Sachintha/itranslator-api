@@ -102,7 +102,7 @@ Route::middleware('authToken')->post('get-sa-dashboard-data', [SuperAdminControl
 
 Route::middleware('authToken')->post('Remove-documents', [NotaryDocumentsController::class, 'RemoveNotaryDocumentsForOrder']);
 
-Route::middleware('authToken')->post('send-order-complete-sms', SMSModelController::class, 'sendOrderCompleteNotificationSMS');
+Route::middleware('authToken')->post('send-order-complete-sms', [SMSModelController::class, 'sendOrderCompleteNotificationSMS']);
 
 Route::middleware('authToken')->post('get-lg-orders', [LegalAdviceController::class, 'getLegalRequest']);
 Route::middleware('authToken')->post('assign-lg-order', [LegalAdviceController::class, 'AssignLegalRequest']);
