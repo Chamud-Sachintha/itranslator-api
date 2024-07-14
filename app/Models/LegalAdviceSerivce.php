@@ -81,5 +81,25 @@ class LegalAdviceSerivce extends Model
         return $query;
     }
 
+    public function completeget_all() {
+        $query = $this->where('order_status', '=', 2)
+        ->distinct()
+        ->pluck('order_no');
+
+            return $query;
+        
+    }
+
+    public function completeget_allDA() {
+        $map['order_status'] = 2;
+        return $this->where($map)->get();
+        
+    }
+
+    
+    public function get_all() {
+        return $this->all();
+    }
+
     
 }

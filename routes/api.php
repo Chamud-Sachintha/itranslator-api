@@ -113,3 +113,4 @@ Route::middleware('authToken')->post('get-lgODoc-List', [LegalAdviceController::
 Route::middleware('authToken')->post('get-lgDoc-List', [LegalAdviceController::class, 'getLegalFDocs']);
 Route::middleware('authToken')->post('view-lgDoc', [LegalAdviceController::class, 'viewLegalDocs']);
 Route::middleware('authToken')->post('get-lg-Complete', [LegalAdviceController::class, 'getLegalComplete']);
+Route::middleware('authToken')->post('get-SAlg-Complete', [LegalAdviceController::class, 'getSALegalComplete']);

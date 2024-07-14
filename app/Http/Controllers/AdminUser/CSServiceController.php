@@ -119,7 +119,10 @@ class CSServiceController extends Controller
 
                 if ($adminInfo) {
                     $resp = $this->CSOrder->get_taken_or_complete_list();
-
+                }
+                else{
+                    $resp = $this->CSOrder->completeget_all();
+                }
                     $dataList = array();
                     foreach ($resp as $key => $value) {
                         $orderAssign = $this->CSOrder->get_by_invoice_id($value['invoice_no']);
@@ -133,7 +136,7 @@ class CSServiceController extends Controller
                     }
 
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
-                }
+                
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }

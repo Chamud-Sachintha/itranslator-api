@@ -91,4 +91,16 @@ class Order extends Model
 
         return $this->where($map)->whereNotIn('payment_status', [2])->count();
     }
+
+    public function notassignget_all() {
+        $map['order_status'] = 0;
+        return $this->where($map)->get();
+        
+    }
+
+    public function completeget_all() {
+        $map['order_status'] = 3;
+        return $this->where($map)->get();
+        
+    }
 }

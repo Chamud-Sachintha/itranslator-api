@@ -459,7 +459,7 @@ class LegalAdviceController extends Controller
         }
     }
     
-    public function getLegalComplete(Request $request){
+ public function getLegalComplete(Request $request){
         $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
 
         if ($request_token == "") {
@@ -488,23 +488,45 @@ class LegalAdviceController extends Controller
             }
 
 
-           /* foreach($resp as $key => $value){
-                $wer = $this->LegalAdvice->getCompltetaskdata( $value);
-
-               // DD($wer);
-                foreach($wer as $key => $value2){
-                $dataList[$key]['id'] = $value2['ID'];
-                $dataList[$key]['message'] = $value2['Message'];
-                $dataList[$key]['OrderNo'] = $value2['OrderNo'];
-                $dataList[$key]['Status'] = $value2['Status'];
-                $dataList[$key]['createTime'] = $value2['create_time'];
-                }
-            }*/
-
+           
           
                   
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
         }
     }
+
+    public function getSALegalComplete(Request $request){
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else {
+
+            $resp = $this->LegalAdviceSerivce->completeget_all();
+            
+            $dataList = array();
+
+            for ($i = 0; $i < count($resp); $i++) {
+                $value = $resp[$i];  
+                
+                $wer = LegalAdvice::where('OrderNo', '=', $value)->get();
+
+                foreach ($wer as $value2) {
+                    $dataList[] = [
+                        'id' => $value2['ID'],
+                        'message' => $value2['Message'],
+                        'OrderNo' => $value2['OrderNo'],
+                        'Status' => $value2['Status'],
+                        'createTime' => $value2['create_time']
+                    ];
+                }
+            }
+
+                  
+                    return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
+    }
+}
+
+
 
 }

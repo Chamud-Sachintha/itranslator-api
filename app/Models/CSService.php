@@ -65,4 +65,20 @@ class CSService extends Model
 
         return $this->where($map)->update($map1);
     }
+
+    public function get_all() {
+        return $this->all();
+    }
+
+    public function notassignget_all() {
+        $map['order_status'] = 0;
+        return $this->where($map)->get();
+        
+    }
+
+    public function completeget_all() {
+        $map['order_status'] = 2;
+        return $this->where($map)->get();
+        
+    }
 }

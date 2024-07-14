@@ -64,7 +64,7 @@ class AdminTaskController extends Controller
         }
     }
 
-    public function getCompleteAllTranslateTaskList(Request $request) {
+  /*  public function getCompleteAllTranslateTaskList(Request $request) {
 
         $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
         $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
@@ -79,8 +79,9 @@ class AdminTaskController extends Controller
                 $adminInfo = $this->AdminUser->find_by_token($request_token);
 
                 if ($adminInfo) {
-                    $resp = $this->TranslateOrder->get_taken_or_complete_list();
-
+                   
+                        $resp = $this->TranslateOrder->get_taken_or_complete_list();
+                   
                     $dataList = array();
                     foreach ($resp as $key => $value) {
                         $orderAssign = $this->OrderAssign->get_by_invoice_id($value['invoice_no']);
@@ -91,15 +92,81 @@ class AdminTaskController extends Controller
                         $dataList[$key]['orderStatus'] = $value['order_status'];
                         $dataList[$key]['createTime'] = $value['create_time'];
                         $dataList[$key]['assignedTime'] = $orderAssign['create_time'];
-                    }
 
-                    return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
+                       
+                    }
+                
                 }
+                    else{
+                        $resp = $this->TranslateOrder->completeget_all();
+                  
+                        $dataList = array();
+                        foreach ($resp as $key => $value) {
+                            
+                            $orderAssign = $this->OrderAssign->get_by_invoice_id($value['invoice_no']);
+                            
+                            $dataList[$key]['invoiceNo'] = $value['invoice_no'];
+                            $dataList[$key]['totalAmount'] = $value['total_amount'];
+                            $dataList[$key]['paymentStatus'] = $value['payment_status'];
+                            $dataList[$key]['orderStatus'] = $value['order_status'];
+                            $dataList[$key]['createTime'] = $value['create_time'];
+                            $dataList[$key]['assignedTime'] = $orderAssign['create_time'];
+                        }
+                    }
+                    DD(  $dataList);
+                     
+                            return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
+                 
+               
+
+                    
+                
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }*/
+
+
+    public function getCompleteAllTranslateTaskList(Request $request) {
+        $request_token = $request->input('token', '');
+        $flag = $request->input('flag', '');
+    
+        if (empty($request_token)) {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } elseif (empty($flag)) {
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
+        } else {
+            try {
+                $adminInfo = $this->AdminUser->find_by_token($request_token);
+    
+                if ($adminInfo) {
+                    $resp = $this->TranslateOrder->get_taken_or_complete_list();
+                } else {
+                    $resp = $this->TranslateOrder->completeget_all();
+                }
+    
+                $dataList = [];
+    
+                foreach ($resp as $key => $value) {
+                    $orderAssign = $this->OrderAssign->get_by_invoice_id($value['invoice_no']);
+    
+                    $dataList[$key]['invoiceNo'] = $value['invoice_no'];
+                    $dataList[$key]['totalAmount'] = $value['total_amount'];
+                    $dataList[$key]['paymentStatus'] = $value['payment_status'];
+                    $dataList[$key]['orderStatus'] = $value['order_status'];
+                    $dataList[$key]['createTime'] = $value['create_time'];
+                    $dataList[$key]['assignedTime'] = $orderAssign ? $orderAssign['create_time'] : null;
+                }
+    
+                return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
+    
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }
         }
     }
+    
 
     public function getNotaryTaskList(Request $request) {
 
@@ -158,7 +225,10 @@ class AdminTaskController extends Controller
 
                 if ($adminInfo) {
                     $resp = $this->NotaryServiceOrder->get_taken_or_complete_list();
-
+                }
+                else{
+                    $resp = $this->NotaryServiceOrder->completeget_all();
+                }
                     $dataList = array();
                     foreach ($resp as $key => $value) {
                         $orderAssign = $this->NotaryServiceOrder->get_by_invoice_id($value['invoice_no']);
@@ -176,7 +246,7 @@ class AdminTaskController extends Controller
                     }
 
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
-                }
+                
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }

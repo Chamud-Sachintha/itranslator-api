@@ -97,4 +97,17 @@ class NotaryServiceOrder extends Model
     public function get_all() {
         return $this->all();
     }
+
+    public function notassignget_all() {
+        $map['order_status'] = 0;
+        return $this->where($map)->get();
+        
+    }
+
+    public function completeget_all() {
+        $map['order_status'] = 3;
+        return $this->where($map)->get();
+        
+    }
+
 }
