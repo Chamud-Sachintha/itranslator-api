@@ -91,7 +91,8 @@ class TranslatedDocumentsController extends Controller
                         $dataList[$key]['id'] = $value['id'];
                         $dataList[$key]['orderId'] = $value['order_id'];
                         $dataList[$key]['document'] = $value['document'];
-                        $dataList[$key]['createTime'] = $value['create_time']; 
+                        $timestamp = $value['create_time']; 
+                        $dataList[$key]['createTime'] = date('Y-m-d ', $timestamp); 
                     }
 
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $dataList);
