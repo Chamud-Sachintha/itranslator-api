@@ -198,6 +198,8 @@ class AdminOrderRequestController extends Controller
         $invoiceNo = (is_null($request->invoiceNo) || empty($request->invoiceNo)) ? "" : $request->invoiceNo;
         $serviceId = (is_null($request->serviceId) || empty($request->serviceId)) ? "" : $request->serviceId;
 
+        $doc = (is_null($request->doc) || empty($request->doc)) ? "" : $request->doc;
+
         if ($request_token == "") {
             return $this->AppHelper->responseMessageHandle(0, "Token is required.");
         } else if ($flag == "") {
@@ -213,7 +215,13 @@ class AdminOrderRequestController extends Controller
 
                 if ($order) {
                     $orderItems = $this->TrOrderItems->find_by_order_and_serviceId($order->id, $serviceId);
-                    $jsonArrayValues = json_decode($orderItems->json_value);
+
+                    if ($doc != "") {
+                        $orderItems = $this->TrOrderItems->find_by_order_and_serviceId_new($order->id, $serviceId);
+                        $jsonArrayValues = json_decode($orderItems[$doc]->json_value);
+                    } else {
+                        $jsonArrayValues = json_decode($orderItems->json_value);
+                    }
                     
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $jsonArrayValues);
                 }

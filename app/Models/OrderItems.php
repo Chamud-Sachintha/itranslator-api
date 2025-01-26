@@ -29,4 +29,11 @@ class OrderItems extends Model
 
         return $this->where($map)->first();
     }
+
+    public function find_by_order_and_serviceId_new($oid, $sid) {
+        $map['order_id'] = $oid;
+        $map['service_id'] = $sid;
+
+        return $this->where($map)->get();
+    }
 }
